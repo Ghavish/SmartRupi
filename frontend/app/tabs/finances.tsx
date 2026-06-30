@@ -40,7 +40,7 @@ export default function FinancesScreen() {
   return (
     <View style={styles.container}>
       {/* Fixed Page Header */}
-      <Text style={styles.header}></Text>
+      <Text style={styles.header}>Balances</Text>
 
       <FlatList
         data={transactions}
