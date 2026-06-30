@@ -14,25 +14,38 @@ export default function SettingsScreen() {
     const [isLoading, setIsLoading] = useState(true);
     const [isSaving, setIsSaving] = useState(false);
 
-    // ── Fetch real user data on mount ─────────────────────────────────────────
+    // ── Optimized Data Fetch with Timeout ──────────────────────────────────────
     useEffect(() => {
-        fetch(`${BASE_URL}/users/${DEMO_USER_ID}`)
-            .then(res => res.json())
+        const controller = new AbortController();
+        // Set a 3-second timeout window
+        const timeoutId = setTimeout(() => controller.abort(), 3000);
+
+        fetch(`${BASE_URL}/users/${DEMO_USER_ID}`, { signal: controller.signal })
+            .then(res => {
+                if (!res.ok) throw new Error('Server response error');
+                return res.json();
+            })
             .then(res => {
                 const user = res.data;
-                setName(user.FullName);
-                setEmail(user.Email);
-                setMonthlyIncome(user.MonthlyIncome.toString());
-                setRiskTolerance(user.RiskTolerance);
+                setName(user.FullName || '');
+                setEmail(user.Email || '');
+                setMonthlyIncome(user.MonthlyIncome ? user.MonthlyIncome.toString() : '');
+                setRiskTolerance(user.RiskTolerance || 'Medium');
             })
-            .catch(() => {
-                // Fallback to demo user if backend unreachable
+            .catch((error) => {
+                console.log('Fetch failed or timed out, applying fallback:', error.message);
+                // Instant fallback to demo user if backend is unreachable or slow
                 setName('Raj Patel');
                 setEmail('rajpatel@gmail.com');
                 setMonthlyIncome('55000');
                 setRiskTolerance('Medium');
             })
-            .finally(() => setIsLoading(false));
+            .finally(() => {
+                clearTimeout(timeoutId);
+                setIsLoading(false);
+            });
+
+        return () => clearTimeout(timeoutId); // Cleanup on unmount
     }, []);
     // ─────────────────────────────────────────────────────────────────────────
 
@@ -48,21 +61,24 @@ export default function SettingsScreen() {
             const response = await fetch(`${BASE_URL}/users/${DEMO_USER_ID}`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ FullName: name, Email: email, MonthlyIncome: parseFloat(monthlyIncome), RiskTolerance: riskTolerance }),
+                body: JSON.stringify({
+                    FullName: name,
+                    Email: email,
+                    MonthlyIncome: parseFloat(monthlyIncome) || 0,
+                    RiskTolerance: riskTolerance
+                }),
             });
 
             if (!response.ok) throw new Error('Failed to save');
             Alert.alert('Success', 'Profile updated successfully.');
             router.back();
         } catch {
-            // If backend unreachable, just go back
             Alert.alert('Saved', 'Changes saved locally.');
             router.back();
         } finally {
             setIsSaving(false);
         }
     };
-    // ─────────────────────────────────────────────────────────────────────────
 
     if (isLoading) {
         return (
