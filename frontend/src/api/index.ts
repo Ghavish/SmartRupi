@@ -17,7 +17,7 @@ export async function dispatchToAgent(agentTarget: string, taskDescription: stri
     const target = swarmConfig[agentTarget as keyof typeof swarmConfig];
     const bandApiUrl = process.env.EXPO_PUBLIC_BAND_API_URL;
     const apiKey = process.env.EXPO_PUBLIC_COMMUNICATION_AGENT_API_KEY;
-    const localApiBase = "http://192.168.8.13:8000"; // Ensure this matches FastAPI port
+    const localApiBase = process.env.EXPO_PUBLIC_API_URL_FAST_API;
 
     // 1. Generate unique request ID
     const requestId = generateUniqueId();
