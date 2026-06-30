@@ -32,10 +32,10 @@ export default function InboxScreen() {
   const handleEmailTap = async (email: Email) => {
     if (loadingId !== null) return;
 
-    console.log('Tapped email:', email.EmailID); // ADD
+    console.log('Tapped email:', email.EmailID); 
     setLoadingId(email.EmailID);
     try {
-      console.log('Dispatching to scam_analyst...'); // ADD
+      console.log('Dispatching to scam_analyst...');
       const result = await dispatchToAgent('scam_analyst', email.BodyText);
       console.log('Agent result:', JSON.stringify(result)); // ADD
 
@@ -43,7 +43,7 @@ export default function InboxScreen() {
         ...prev,
         [email.EmailID]: {
           isScam: result.isScam,
-          confidence: result.confidence,
+          confidence: result.confidenceScore, 
           reason: result.reason
         }
       }));
