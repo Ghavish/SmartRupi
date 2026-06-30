@@ -6,6 +6,8 @@ import os
 import atexit
 import signal
 
+from prepopulate_users import setup_users
+
 from dotenv import load_dotenv
 
 # Dynamically find the absolute path to the backend/ folder
@@ -42,6 +44,15 @@ AGENT_SCRIPTS = [
 processes = []
 
 def start_swarm():
+
+    # print("🛠 Running database setup...")
+    # try:
+    #     setup_users() 
+    # except Exception as e:
+    #     print(f"⚠️ Database setup warning: {e}")
+
+    # subprocess.run([sys.executable, "prepopulate_users.py"], check=True)
+
     print("🚀 Booting up the Agent Swarm...")
     for script in AGENT_SCRIPTS:
         print(f"Starting {script}...")
@@ -52,7 +63,6 @@ def start_swarm():
         time.sleep(1) 
     
     print("\n✅ All agents are live and listening to Band.ai!")
-    print("📍 Railway Service is running...")
     print("Press Ctrl+C to shut down the entire swarm.\n")
 
 def shutdown_swarm():

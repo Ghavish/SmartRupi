@@ -18,7 +18,7 @@ def get_db_connection():
     return conn
 
 def init_db():
-    """Initialize the database with the logs table."""
+
     conn = get_db_connection()
     cursor = conn.cursor()
     cursor.execute("""
@@ -30,6 +30,16 @@ def init_db():
         )
     """)
     cursor.execute("CREATE INDEX IF NOT EXISTS idx_request_id ON logs(request_id)")
+    
+    # New users table
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS users (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            username TEXT UNIQUE NOT NULL,
+            password_hash TEXT NOT NULL
+        )
+    """)
+    
     conn.commit()
     conn.close()
 

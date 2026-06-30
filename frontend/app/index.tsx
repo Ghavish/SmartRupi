@@ -38,7 +38,6 @@ export default function LoginScreen() {
         placeholderTextColor="#8892B0"
         defaultValue="your-email@gmail.com" 
       />
-      
       <TextInput 
         style={styles.input} 
         placeholder="Password" 
