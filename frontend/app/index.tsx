@@ -36,8 +36,9 @@ export default function LoginScreen() {
         style={styles.input} 
         placeholder="Email" 
         placeholderTextColor="#8892B0"
-        defaultValue="ghavish.subratty@uom.mu" 
+        defaultValue="your-email@gmail.com" 
       />
+      
       <TextInput 
         style={styles.input} 
         placeholder="Password" 

@@ -3,8 +3,7 @@ import logging
 import os
 from dotenv import load_dotenv
 
-from thenvoi import Agent
-from thenvoi.adapters import LangGraphAdapter
+from band.adapters import LangGraphAdapter
 
 from langchain_openai import ChatOpenAI
 from langgraph.checkpoint.memory import InMemorySaver

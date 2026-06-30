@@ -14,8 +14,25 @@ env_path = os.path.join(current_dir, ".env")
 
 load_dotenv(dotenv_path=env_path)
 
+# Railway provides PORT environment variable
+PORT = os.getenv("PORT", "8000")
+print(f"🚀 Starting on port {PORT}...")
+
+# START THE API SERVER IN THE BACKGROUND
+print(f"Starting FastAPI Backend Server on Port {PORT}...")
+api_process = subprocess.Popen([sys.executable, "api_server.py"])
+
+# PREVENT GHOST PROCESSES: This ensures that Ctrl+C also kills the API server
+def cleanup_api_server():
+    print("\nShutting down FastAPI server...")
+    api_process.terminate()
+    api_process.wait()
+
+atexit.register(cleanup_api_server)
+
 # List of your agent scripts based on your directory structure
 AGENT_SCRIPTS = [
+    "agents/communication_agent.py",
     "agents/scam_analyst.py",
     "agents/financial_auditor.py",
     "agents/loan_officer.py",
@@ -65,3 +82,4 @@ if __name__ == "__main__":
         print(f"❌ Error: {e}")
         shutdown_swarm()
         sys.exit(1)
+        

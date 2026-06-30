@@ -32,10 +32,10 @@ yarn-error.*
 
 # local env files
 .env*.local
-ai-service/.env
+ai_service/.env
 
 # Agent Config files
-ai-service/agent_config.yaml
+ai_service/agent_config.yaml
 
 # typescript
 *.tsbuildinfo

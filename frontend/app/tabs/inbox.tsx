@@ -32,27 +32,25 @@ export default function InboxScreen() {
   const handleEmailTap = async (email: Email) => {
     if (loadingId !== null) return;
 
-    console.log('Tapped email:', email.EmailID);
     setLoadingId(email.EmailID);
     try {
-      console.log('Dispatching to scam_analyst...');
       const result = await dispatchToAgent('scam_analyst', email.BodyText);
-      console.log('Agent result:', JSON.stringify(result)); // ADD
+      console.log('Agent returned:', result); // This will be "Warning! Scam Alert!"
 
+      // Update your state to handle the simple string result
       setResults(prev => ({
         ...prev,
         [email.EmailID]: {
-          isScam: result.isScam,
-          confidence: result.confidenceScore,
-          reason: result.reason
+          isScam: result.includes("Scam"), // Determine boolean from the string
+          confidence: 0, // Not available in the filtered string
+          reason: result // The string itself acts as the reason
         }
       }));
 
-      if (result.isScam) {
+      if (result.includes("Scam")) {
         await Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
       }
     } catch (error) {
-      console.error("DEBUG ERROR:", error);
       Alert.alert('Analysis Failed', 'Could not reach Scam Analyst.');
     } finally {
       setLoadingId(null);
@@ -79,7 +77,7 @@ export default function InboxScreen() {
           </View>
         )}
 
-        {result && !isLoading && (
+        {/* {result && !isLoading && (
           <View style={[styles.resultBanner, result.isScam ? styles.scam : styles.safe]}>
             <Text style={styles.resultText}>
               {result.isScam
@@ -87,7 +85,17 @@ export default function InboxScreen() {
                 : `✓ Safe — ${result.reason}`}
             </Text>
           </View>
+        )} */}
+        {result && !isLoading && (
+          <View style={[styles.resultBanner, result.isScam ? styles.scam : styles.safe]}>
+            <Text style={styles.resultText}>
+              {result.isScam
+                ? `⚠ SCAM DETECTED`
+                : `✓ Safe — ${result.reason}`}
+            </Text>
+          </View>
         )}
+        
       </TouchableOpacity>
     );
   };

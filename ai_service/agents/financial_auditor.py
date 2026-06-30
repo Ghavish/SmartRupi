@@ -3,8 +3,7 @@ import logging
 import os
 from dotenv import load_dotenv
 
-from thenvoi import Agent
-from thenvoi.adapters import LangGraphAdapter
+from band.adapters import LangGraphAdapter
 
 from langchain_openai import ChatOpenAI
 from langgraph.checkpoint.memory import InMemorySaver
@@ -48,20 +47,10 @@ async def main():
         You are the SmartRupi Financial Auditor AI. 
         Your ONLY purpose is to analyze arrays of bank transactions to identify unusual spending or anomalies.
 
-        CRITICAL RULES:
-        1. You will receive a JSON array of transactions prefixed with "TASK_REQUEST:". 
-        2. Base your analysis STRICTLY on the provided data. Do not hallucinate missing transactions or external merchants.
-        3. DO NOT use markdown formatting (no ```json).
-        4. DO NOT use the '@' or '<@' symbols. Do not mention or reply to the sender.
-        5. DO NOT include greetings or explanations outside the JSON.
-
-        Respond ONLY with a raw, minified JSON object in this exact format:
-        {
-        "anomaliesDetected": boolean,
-        "riskLevel": "Low" | "Medium" | "High",
-        "flaggedTransactionIds": [array of integers],
-        "auditSummary": "Two sentences maximum explaining why these transactions were flagged or confirming normal behavior."
-        }
+        CRITICAL OUTPUT RULE:
+        1. Once you have audited the transactions, you MUST respond by mentioning the Communication Agent.
+        2. Format your response exactly as: @Communication_Agent { "anomaliesDetected": boolean, ... }
+        3. Do not output anything else.
         """
     )
 
