@@ -42,7 +42,6 @@ export default function LoansScreen() {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.header}>Loan Offers</Text>
 
       <TouchableOpacity
         style={styles.eligibilityButton}
