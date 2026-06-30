@@ -39,9 +39,6 @@ export default function FinancesScreen() {
 
   return (
     <View style={styles.container}>
-      {/* Fixed Page Header */}
-      <Text style={styles.header}>Finances</Text>
-
       <FlatList
         data={transactions}
         keyExtractor={(item) => item.TransactionID.toString()}

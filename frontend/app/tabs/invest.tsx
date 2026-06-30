@@ -91,7 +91,6 @@ export default function InvestScreen() {
 
   return (
     <ScrollView style={styles.container}>
-      <Text style={styles.header}>Investments</Text>
       <Text style={styles.subheader}>Monthly budget: Rs {INVEST_BUDGET.toLocaleString()}</Text>
 
       <TouchableOpacity

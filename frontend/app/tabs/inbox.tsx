@@ -32,7 +32,7 @@ export default function InboxScreen() {
   const handleEmailTap = async (email: Email) => {
     if (loadingId !== null) return;
 
-    console.log('Tapped email:', email.EmailID); 
+    console.log('Tapped email:', email.EmailID);
     setLoadingId(email.EmailID);
     try {
       console.log('Dispatching to scam_analyst...');
@@ -43,7 +43,7 @@ export default function InboxScreen() {
         ...prev,
         [email.EmailID]: {
           isScam: result.isScam,
-          confidence: result.confidenceScore, 
+          confidence: result.confidenceScore,
           reason: result.reason
         }
       }));
@@ -94,7 +94,6 @@ export default function InboxScreen() {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.header}>Inbox</Text>
       <FlatList
         data={emails}
         keyExtractor={(item) => item.EmailID.toString()}
