@@ -4,13 +4,14 @@ import { Ionicons } from '@expo/vector-icons';
 import { router } from 'expo-router';
 
 export default function ProfileScreen() {
-  
+
   const handleLogout = () => {
     router.replace('/');
   };
 
   return (
     <ScrollView style={styles.container} contentContainerStyle={{ paddingBottom: 40 }}>
+      {/* Header Section */}
       <View style={styles.header}>
         <TouchableOpacity onPress={() => router.back()}>
           <Ionicons name="arrow-back" size={28} color="#00F0FF" />
@@ -19,12 +20,14 @@ export default function ProfileScreen() {
         <View style={{ width: 28 }} />
       </View>
 
+      {/* User Information Summary */}
       <View style={styles.avatarContainer}>
         <Ionicons name="person-circle" size={100} color="#00F0FF" />
         <Text style={styles.name}>Ghavish Subratty</Text>
         <Text style={styles.email}>ghavish@umail.uom.ac.mu</Text>
       </View>
 
+      {/* Institution & Team Roles */}
       <View style={styles.section}>
         <View style={styles.infoCard}>
           <Ionicons name="school" size={24} color="#8892B0" />
@@ -43,27 +46,37 @@ export default function ProfileScreen() {
         </View>
       </View>
 
+      {/* Interactive Navigation Menu */}
       <View style={styles.section}>
-        <TouchableOpacity style={styles.menuItem}>
-          <Text style={styles.menuText}>Account Settings</Text>
-          <Ionicons name="chevron-forward" size={20} color="#8892B0" />
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.menuItem}>
-          <Text style={styles.menuText}>Notification Preferences</Text>
-          <Ionicons name="chevron-forward" size={20} color="#8892B0" />
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.menuItem}>
-          <Text style={styles.menuText}>Linked Bank Accounts</Text>
-          <Ionicons name="chevron-forward" size={20} color="#8892B0" />
-        </TouchableOpacity>
+        <MenuItem
+          title="Account Settings"
+          onPress={() => router.push('/profile/settings')}
+        />
+        <MenuItem
+          title="Notification Preferences"
+          onPress={() => router.push('/profile/notifications')}
+        />
+        <MenuItem
+          title="Linked Bank Accounts"
+          onPress={() => router.push('/profile/bank-accounts')}
+        />
       </View>
 
+      {/* Action Button */}
       <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
         <Text style={styles.logoutText}>LOG OUT</Text>
       </TouchableOpacity>
     </ScrollView>
   );
 }
+
+// Reusable Menu Item Component handling navigation execution
+const MenuItem = ({ title, onPress }: { title: string; onPress: () => void }) => (
+  <TouchableOpacity style={styles.menuItem} onPress={onPress} activeOpacity={0.7}>
+    <Text style={styles.menuText}>{title}</Text>
+    <Ionicons name="chevron-forward" size={20} color="#8892B0" />
+  </TouchableOpacity>
+);
 
 const styles = StyleSheet.create({
   container: {
