@@ -9,9 +9,9 @@ router.get('/:userId', async (req, res) => {
     try {
         const { userId } = req.params;
         console.log(`📊 Fetching transactions for user: ${userId}`);  // Debug log
-        
+
         const pool = await getConnection();
-        
+
         const result = await pool.request()
             .input('userId', sql.Int, userId)
             .query(`
@@ -20,9 +20,9 @@ router.get('/:userId', async (req, res) => {
                 WHERE UserID = @userId
                 ORDER BY Date DESC
             `);
-        
+
         console.log(`✅ Found ${result.recordset.length} transactions`);
-        
+
         res.json({
             success: true,
             count: result.recordset.length,
@@ -30,9 +30,9 @@ router.get('/:userId', async (req, res) => {
         });
     } catch (error) {
         console.error('❌ Error fetching transactions:', error);
-        res.status(500).json({ 
-            success: false, 
-            error: error.message 
+        res.status(500).json({
+            success: false,
+            error: error.message
         });
     }
 });
@@ -42,7 +42,7 @@ router.get('/:userId/summary', async (req, res) => {
     try {
         const { userId } = req.params;
         const pool = await getConnection();
-        
+
         const result = await pool.request()
             .input('userId', sql.Int, userId)
             .query(`
@@ -53,10 +53,10 @@ router.get('/:userId/summary', async (req, res) => {
                 FROM Transactions
                 WHERE UserID = @userId
             `);
-        
+
         const summary = result.recordset[0];
         const leftover = summary.TotalIncome - summary.TotalExpenses;
-        
+
         res.json({
             success: true,
             data: {
@@ -66,9 +66,9 @@ router.get('/:userId/summary', async (req, res) => {
         });
     } catch (error) {
         console.error('Error fetching summary:', error);
-        res.status(500).json({ 
-            success: false, 
-            error: error.message 
+        res.status(500).json({
+            success: false,
+            error: error.message
         });
     }
 });

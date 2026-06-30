@@ -8,7 +8,7 @@ const { getConnection, sql } = require('../db.js');
 router.get('/offers', async (req, res) => {
     try {
         const pool = await getConnection();
-        
+
         const result = await pool.request()
             .query(`
                 SELECT OfferID, BankName, InterestRate, MaxAmount, 
@@ -16,7 +16,7 @@ router.get('/offers', async (req, res) => {
                 FROM LoanOffers
                 ORDER BY InterestRate ASC
             `);
-        
+
         res.json({
             success: true,
             count: result.recordset.length,
@@ -24,9 +24,9 @@ router.get('/offers', async (req, res) => {
         });
     } catch (error) {
         console.error('Error fetching loan offers:', error);
-        res.status(500).json({ 
-            success: false, 
-            error: error.message 
+        res.status(500).json({
+            success: false,
+            error: error.message
         });
     }
 });
@@ -36,7 +36,7 @@ router.post('/recommend/:userId', async (req, res) => {
     try {
         const { userId } = req.params;
         const pool = await getConnection();
-        
+
         const userResult = await pool.request()
             .input('userId', sql.Int, userId)
             .query(`
@@ -44,16 +44,16 @@ router.post('/recommend/:userId', async (req, res) => {
                 FROM Users
                 WHERE UserID = @userId
             `);
-        
+
         if (userResult.recordset.length === 0) {
-            return res.status(404).json({ 
-                success: false, 
-                error: 'User not found' 
+            return res.status(404).json({
+                success: false,
+                error: 'User not found'
             });
         }
-        
+
         const user = userResult.recordset[0];
-        
+
         const summaryResult = await pool.request()
             .input('userId', sql.Int, userId)
             .query(`
@@ -63,21 +63,21 @@ router.post('/recommend/:userId', async (req, res) => {
                 FROM Transactions
                 WHERE UserID = @userId
             `);
-        
+
         const summary = summaryResult.recordset[0];
         const monthlySurplus = summary.TotalIncome - summary.TotalExpenses;
-        
+
         const loanResult = await pool.request()
             .query(`
                 SELECT OfferID, BankName, InterestRate, MaxAmount, 
                        RequiredMinimumIncome, LoanType
                 FROM LoanOffers
             `);
-        
-        const bestMatch = loanResult.recordset.find(loan => 
+
+        const bestMatch = loanResult.recordset.find(loan =>
             loan.RequiredMinimumIncome <= user.MonthlyIncome
         );
-        
+
         res.json({
             success: true,
             data: {
@@ -99,7 +99,7 @@ router.post('/recommend/:userId', async (req, res) => {
                         .filter(l => l.OfferID !== (bestMatch?.OfferID || 0))
                         .slice(0, 2)
                         .map(l => `${l.BankName} (${l.InterestRate}%)`),
-                    advice: bestMatch ? 
+                    advice: bestMatch ?
                         `Based on your monthly surplus of Rs ${monthlySurplus.toLocaleString()}, you qualify for the ${bestMatch.BankName} ${bestMatch.LoanType} loan.` :
                         'You may need to increase your income to qualify for a loan.'
                 }
@@ -107,9 +107,9 @@ router.post('/recommend/:userId', async (req, res) => {
         });
     } catch (error) {
         console.error('Error recommending loans:', error);
-        res.status(500).json({ 
-            success: false, 
-            error: error.message 
+        res.status(500).json({
+            success: false,
+            error: error.message
         });
     }
 });
