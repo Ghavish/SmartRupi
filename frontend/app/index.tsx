@@ -1,21 +1,45 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, ActivityIndicator, Image } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, ActivityIndicator, Image, Alert } from 'react-native';
 import { router } from 'expo-router';
 
 export default function LoginScreen() {
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleLogin = () => {
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+
+  const handleLogin = async () => {
     setIsLoading(true);
-    
-    // Simulate a 1-second network request to your Node.js backend
-    setTimeout(() => {
+
+    try {
+      const response = await fetch(`${process.env.EXPO_PUBLIC_API_URL_FAST_API}/api/login`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username: username, password: password }),
+      });
+
+      if (response.ok) {
+        router.replace('/tabs/finances');
+      } else {
+        Alert.alert("Login Failed", "Invalid credentials.");
+      }
+    } catch (error) {
+      Alert.alert("Connection Error", "Backend server is unreachable.");
+    } finally {
       setIsLoading(false);
-      // router.replace completely wipes the login screen from history
-      // so the user cannot swipe back to it once they are in!
-      router.replace('/tabs/finances');
-    }, 1000);
+    }
   };
+  // const handleLogin = () => {
+  //   setIsLoading(true);
+    
+  //   // Simulate a 1-second network request to your Node.js backend
+  //   setTimeout(() => {
+  //     setIsLoading(false);
+  //     // router.replace completely wipes the login screen from history
+  //     // so the user cannot swipe back to it once they are in!
+  //     router.replace('/tabs/finances');
+  //   }, 1000);
+  // };
 
   return (
     <View style={styles.container}>
@@ -32,7 +56,7 @@ export default function LoginScreen() {
     </View>
 
       {/* Input Fields (Pre-filled for the Hackathon Demo) */}
-      <TextInput 
+      {/* <TextInput 
         style={styles.input} 
         placeholder="Email" 
         placeholderTextColor="#8892B0"
@@ -44,6 +68,23 @@ export default function LoginScreen() {
         placeholderTextColor="#8892B0"
         defaultValue="••••••••"
         secureTextEntry 
+      /> */}
+
+      <TextInput 
+        style={styles.input} 
+        placeholder="Username" 
+        placeholderTextColor="#8892B0"
+        defaultValue="your-email@gmail.com" 
+        value={username} 
+        onChangeText={setUsername}
+      />
+      <TextInput 
+        style={styles.input} 
+        placeholder="Password" 
+        placeholderTextColor="#8892B0"
+        value={password} 
+        onChangeText={setPassword} 
+        secureTextEntry
       />
 
       {/* Login Button */}

@@ -1,4 +1,3 @@
-# backend/start_backend.py
 import subprocess
 import sys
 import time
@@ -6,9 +5,9 @@ import os
 import atexit
 import signal
 
-from prepopulate_users import setup_users
-
 from dotenv import load_dotenv
+
+from prepopulate_users import setup_users
 
 # Dynamically find the absolute path to the backend/ folder
 current_dir = os.path.dirname(os.path.abspath(__file__))
@@ -44,15 +43,6 @@ AGENT_SCRIPTS = [
 processes = []
 
 def start_swarm():
-
-    # print("🛠 Running database setup...")
-    # try:
-    #     setup_users() 
-    # except Exception as e:
-    #     print(f"⚠️ Database setup warning: {e}")
-
-    # subprocess.run([sys.executable, "prepopulate_users.py"], check=True)
-
     print("🚀 Booting up the Agent Swarm...")
     for script in AGENT_SCRIPTS:
         print(f"Starting {script}...")
@@ -61,8 +51,9 @@ def start_swarm():
         processes.append(p)
         # Brief pause to avoid hammering the Band.ai API instantly
         time.sleep(1) 
-    
+
     print("\n✅ All agents are live and listening to Band.ai!")
+    print("📍 Railway Service is running...")
     print("Press Ctrl+C to shut down the entire swarm.\n")
 
 def shutdown_swarm():
@@ -78,10 +69,15 @@ def signal_handler(sig, frame):
 
 if __name__ == "__main__":
     try:
+
+        # SETUP DATABASE
+        print("🛠 Initializing database and creating users...")
+        setup_users()
+
         # Register signal handlers for graceful shutdown
         signal.signal(signal.SIGINT, signal_handler)
         signal.signal(signal.SIGTERM, signal_handler)
-        
+
         start_swarm()
         # Keep the main process alive while agents run
         while True:
@@ -92,4 +88,3 @@ if __name__ == "__main__":
         print(f"❌ Error: {e}")
         shutdown_swarm()
         sys.exit(1)
-        

@@ -91,7 +91,7 @@ export default function InvestScreen() {
 
   return (
     <ScrollView style={styles.container}>
-      <Text style={styles.subheader}>Monthly budget: Rs {INVEST_BUDGET.toLocaleString()}</Text>
+      <Text style={styles.subheader}>Monthly Allocatable Budget: Rs {INVEST_BUDGET.toLocaleString()}</Text>
 
       <TouchableOpacity
         style={[styles.button, loading && styles.buttonDisabled]}
@@ -139,7 +139,7 @@ export default function InvestScreen() {
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: '#0A0A1A', padding: 16 },
   header: { fontSize: 24, color: '#FFFFFF', fontWeight: '700', marginBottom: 4 },
-  subheader: { fontSize: 13, color: '#8E8EA0', marginBottom: 24 },
+  subheader: { fontSize: 18, color: '#8E8EA0', marginBottom: 24 },
   button: { backgroundColor: '#00E5FF', borderRadius: 12, padding: 16, alignItems: 'center', marginBottom: 24 },
   buttonDisabled: { opacity: 0.6 },
   buttonInner: { flexDirection: 'row', alignItems: 'center' },

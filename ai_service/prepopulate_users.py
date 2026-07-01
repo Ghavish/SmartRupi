@@ -3,20 +3,26 @@ import sqlite3
 import os
 
 def setup_users():
-    
-    # 1. Get the directory where THIS script is located
     script_dir = os.path.dirname(os.path.abspath(__file__))
+    db_path = os.path.join(script_dir, 'data', 'users.db')
     
-    # 2. Build the path: move up one level (if needed) and into data/
-    # If requests.db is inside 'ai_service/data/', use this:
-    db_path = os.path.join(script_dir, 'data', 'requests.db')
+    # Ensure the directory exists
+    os.makedirs(os.path.dirname(db_path), exist_ok=True)
     
-    print(f"DEBUG: Attempting to connect to: {db_path}")
     conn = sqlite3.connect(db_path)
-
     cursor = conn.cursor()
+
+    # Create table if it doesn't exist
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS users (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            username TEXT UNIQUE NOT NULL,
+            password_hash TEXT NOT NULL
+        )
+    """)
+    conn.commit()
     
-    # List of users to add
+    # Define your demo users
     users_to_add = [
         ("raj", "password123"),
         ("sira", "securepassword123")

@@ -17,7 +17,7 @@ export async function dispatchToAgent(agentTarget: string, taskDescription: stri
     const target = swarmConfig[agentTarget as keyof typeof swarmConfig];
     const bandApiUrl = process.env.EXPO_PUBLIC_BAND_API_URL;
     const apiKey = process.env.EXPO_PUBLIC_COMMUNICATION_AGENT_API_KEY;
-    const localApiBase = process.env.EXPO_PUBLIC_API_URL_FAST_API;
+    const localApiBase = "http://192.168.8.13:8000"; // Ensure this matches FastAPI port
 
     // 1. Generate unique request ID
     const requestId = generateUniqueId();
@@ -34,23 +34,27 @@ export async function dispatchToAgent(agentTarget: string, taskDescription: stri
         })
     });
 
-    // 3. Poll your FastAPI server for the agent's database result
-    for (let i = 0; i < 30; i++) {
+   // 3. Poll your FastAPI server
+    for (let i = 0; i < 20; i++) {
         try {
             const res = await fetch(`${localApiBase}/api/get-log?request_id=${requestId}`);
+            
+            // Log the raw response status
+            console.log(`Polling status: ${res.status}`);
+            
             const data = await res.json();
+            console.log("Polling Data:", data); // Is this actually printing 'message'?
 
-            // If the database returns a message, the agent has finished processing
-            if (data?.message) {
+            // If the database returns a message that is NOT "Pending"
+            if (data && data.message && data.message !== "Pending") {
                 console.log(`✅ Final alert captured for ${requestId}`);
                 return data.message;
             }
         } catch (e) {
-            console.warn("Polling attempt failed, retrying...");
+            console.error("Polling fetch error:", e);
         }
-
-        console.log(`⏳ Waiting for agent result... (Attempt ${i + 1}/30)`);
-        await new Promise(resolve => setTimeout(resolve, 1500));
+        
+        await new Promise(resolve => setTimeout(resolve, 2000));
     }
 
     throw new Error("Agent timed out: No log entry found in database.");

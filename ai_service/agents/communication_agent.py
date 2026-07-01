@@ -25,7 +25,7 @@ async def main():
 
     adapter = LangGraphAdapter(
         llm=ChatOpenAI(
-            model="llama-3.3-70b-versatile",
+            model="llama-3.1-8b-instant",
             openai_api_key=os.getenv("GROQ_API_KEY"),
             openai_api_base="https://api.groq.com/openai/v1",
         ),
@@ -58,18 +58,10 @@ async def main():
         3. After completing your task, do not exit the room. Remain available for further analysis or user inquiries.
 
         ACTION REQUIRED(MANDATORY): 
-        You have access to a function/tool named `append_log`. You MUST invoke the `append_log` tool immediately, passing the ID and the message as arguments. 
-        Do not do anything else.
+        You have access to a function/tool named `append_log`. You MUST invoke the `append_log` tool immediately, passing the Request ID and the message as arguments. 
+        Do not do anything else. Do NOT use your own Agent ID or invent a UUID. If you do not use the exact Request ID provided in the text, the system will fail."
         """
-        # custom_section="""
-        # You are the SmartRupi Communication Agent.
-        
-        # CRITICAL PROTOCOL:
-        # 1. Listen for "DATA_FOR_COMMUNICATION:" in the chat.
-        # 2. When found, generate a 3-sentence banking alert.
-        # 3. Output the alert as plain text.
-        # 4. TERMINATION: After outputting your alert, you MUST go silent. Do not reply to any messages, do not trigger tools, and do not mention any other agents.
-        # """
+
     )
 
     agent = Agent.create(

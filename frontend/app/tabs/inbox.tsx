@@ -1,4 +1,3 @@
-// app/tabs/inbox.tsx
 import React, { useEffect, useState } from 'react';
 import {
   View, Text, FlatList, TouchableOpacity,
