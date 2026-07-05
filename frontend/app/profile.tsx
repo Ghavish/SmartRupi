@@ -23,8 +23,8 @@ export default function ProfileScreen() {
       {/* User Information Summary */}
       <View style={styles.avatarContainer}>
         <Ionicons name="person-circle" size={100} color="#00F0FF" />
-        <Text style={styles.name}>Ghavish Subratty</Text>
-        <Text style={styles.email}>ghavish@umail.uom.ac.mu</Text>
+        <Text style={styles.name}>Raj Patel</Text>
+        <Text style={styles.email}>rajpatel@gmail.com</Text>
       </View>
 
       {/* Institution & Team Roles */}

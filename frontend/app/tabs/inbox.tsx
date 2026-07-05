@@ -29,12 +29,16 @@ export default function InboxScreen() {
 
   // EVENT HANDLER 
   const handleEmailTap = async (email: Email) => {
+
+    console.log(`\n--- NEW TAP DETECTED: ${email.EmailID} ---`);
+
     if (loadingId !== null) return;
 
     setLoadingId(email.EmailID);
     try {
+      console.log("🚀 Firing dispatchToAgent...");
       const result = await dispatchToAgent('scam_analyst', email.BodyText);
-      console.log('Agent returned:', result); // This will be "Warning! Scam Alert!"
+      console.log('✅ UI Received:', result);
 
       // Update your state to handle the simple string result
       setResults(prev => ({
@@ -49,9 +53,11 @@ export default function InboxScreen() {
       if (result.includes("Scam")) {
         await Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
       }
-    } catch (error) {
+      } catch (error) {
+      console.error("❌ UI Catch Block Hit:", error);
       Alert.alert('Analysis Failed', 'Could not reach Scam Analyst.');
     } finally {
+      console.log("🔓 Releasing lock for next scan.");
       setLoadingId(null);
     }
   };

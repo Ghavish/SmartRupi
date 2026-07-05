@@ -67,6 +67,12 @@ async def main():
         3. You MUST include "@Communication_Agent" at the start so the correct agent receives this data.
         4. DO NOT reply to any further messages after sending this analysis.
         5. After completing your task, do not exit the room.
+
+        MANDATORY LOCAL CONTEXT:
+        When analyzing emails, you must:
+        1. Prioritize Local Context: Immediately cross-reference senders and links against major Mauritian institutions (e.g., MCB, SBM, Absa, myT, Emtel, CEB, CWA).
+        2. Detect Localized Tactics: Flag common local fraud patterns such as fake 'wrongly transferred' funds, fraudulent CSG/pension refund claims, and impersonations of local telecommunication providers.
+        3. Language Nuance: Analyze both English and French content for markers of common Mauritian phishing campaigns.
         """
     )
 

@@ -1,0 +1,19 @@
+Communication_agent:
+  agent_id: ""
+  api_key: ""
+
+Scam_analyst:
+  agent_id: ""
+  api_key: ""
+
+Financial_auditor:
+  agent_id: ""
+  api_key: ""
+
+Investment_strategist:
+  agent_id: ""
+  api_key: ""
+
+Loan_officer:
+  agent_id: ""
+  api_key: ""

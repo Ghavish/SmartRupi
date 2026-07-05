@@ -58,7 +58,7 @@ async def main():
         3. After completing your task, do not exit the room. Remain available for further analysis or user inquiries.
 
         ACTION REQUIRED(MANDATORY): 
-        You have access to a function/tool named `append_log`. You MUST invoke the `append_log` tool immediately, passing the Request ID and the message as arguments. 
+        You have access to a function/tool named `append_log`. You MUST invoke the `append_log` tool immediately, passing EXACTLY the Request ID and the message as arguments. 
         Do not do anything else. Do NOT use your own Agent ID or invent a UUID. If you do not use the exact Request ID provided in the text, the system will fail."
         """
 

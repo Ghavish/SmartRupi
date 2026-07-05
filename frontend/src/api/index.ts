@@ -17,7 +17,7 @@ export async function dispatchToAgent(agentTarget: string, taskDescription: stri
     const target = swarmConfig[agentTarget as keyof typeof swarmConfig];
     const bandApiUrl = process.env.EXPO_PUBLIC_BAND_API_URL;
     const apiKey = process.env.EXPO_PUBLIC_COMMUNICATION_AGENT_API_KEY;
-    const localApiBase = "http://192.168.8.13:8000"; // Ensure this matches FastAPI port
+    const localApiBase = process.env.EXPO_PUBLIC_API_URL_FAST_API; // Ensure this matches FastAPI port
 
     // 1. Generate unique request ID
     const requestId = generateUniqueId();
@@ -34,10 +34,10 @@ export async function dispatchToAgent(agentTarget: string, taskDescription: stri
         })
     });
 
-   // 3. Poll your FastAPI server
-    for (let i = 0; i < 20; i++) {
+    // 3. Poll your FastAPI server
+     for (let i = 0; i < 10; i++) {
         try {
-            const res = await fetch(`${localApiBase}/api/get-log?request_id=${requestId}`);
+            const res = await fetch(`${localApiBase}/api/get-log?request_id=${"85a8942f-ea69-48c8-9429-6a5098cb2ac6"}`);
             
             // Log the raw response status
             console.log(`Polling status: ${res.status}`);
@@ -47,7 +47,7 @@ export async function dispatchToAgent(agentTarget: string, taskDescription: stri
 
             // If the database returns a message that is NOT "Pending"
             if (data && data.message && data.message !== "Pending") {
-                console.log(`✅ Final alert captured for ${requestId}`);
+                console.log(`✅ Final alert captured for ${"85a8942f-ea69-48c8-9429-6a5098cb2ac6"}`);
                 return data.message;
             }
         } catch (e) {
@@ -79,14 +79,302 @@ export async function getUsers() {
 export async function getEmails(userId: number) {
     // PRESET DATA 
     return [
-        { UserID: 1, EmailID: 1, SenderAddress: 'security-alert@mcb-secure-verify.com', Subject: 'URGENT: Your MCB account has been suspended', BodyText: 'Dear Raj, unusual activity detected on account ending in 3456. Verify now or your Rs 45,800 will be frozen: http://mcb-account-verify.net', IsVerified: 0 },
-        { UserID: 1, EmailID: 2, SenderAddress: 'no-reply@mcb.mu', Subject: 'Your MCB eStatement for May 2025 is ready', BodyText: 'Dear Raj, your eStatement for May 2025 is available. Log in at https://www.mcb.mu to view it.', IsVerified: 1 },
-        { UserID: 1, EmailID: 3, SenderAddress: 'winner-promo@winner-deals.net', Subject: 'You won Rs 50,000!', BodyText: 'Congratulations! Claim your prize now at http://winner-claim-prize.com', IsVerified: 0 },
-        { UserID: 1, EmailID: 4, SenderAddress: 'no-reply@myt.mu', Subject: 'Your MyT Bill June 2025', BodyText: 'Dear customer, your MyT bill of Rs 1,299 is due. Pay at https://www.myt.mu', IsVerified: 1 },
-        { UserID: 1, EmailID: 5, SenderAddress: 'support@sbm-secure-alert.com', Subject: 'SBM Account Suspended — Act Now', BodyText: 'Verify your SBM account immediately at http://sbm-verify.net or lose access permanently', IsVerified: 0 },
-        { UserID: 1, EmailID: 6, SenderAddress: 'noreply@orange.mu', Subject: 'Your Orange Monthly Statement', BodyText: 'Your June statement is ready. View it at https://www.orange.mu', IsVerified: 1 },
-        { UserID: 1, EmailID: 7, SenderAddress: 'alert@mcb-security-check.net', Subject: 'Suspicious Login Detected on Your Account', BodyText: 'Someone logged into your MCB account from an unknown device. Confirm it was you: http://mcb-login-check.com', IsVerified: 0 },
-        { UserID: 1, EmailID: 8, SenderAddress: 'no-reply@ceb.mu', Subject: 'Your CEB Bill for June 2025', BodyText: 'Dear Mr. Ramdhany, your electricity bill of Rs 3,100 is due by July 15th. Pay at https://www.ceb.mu', IsVerified: 1 },
+       {
+
+        UserID: 1,
+
+        EmailID: 1,
+
+        SenderAddress: 'security-alert@mcb-secure-verify.com',
+
+        Subject: 'URGENT: Your MCB account has been suspended',
+
+        BodyText: 'Dear Raj, unusual activity detected on account ending in 3456. Verify now or your Rs 45,800 will be frozen: http://mcb-account-verify.net',
+
+        IsVerified: 0
+
+        },
+
+        {
+
+        UserID: 1,
+
+        EmailID: 2,
+
+        SenderAddress: 'no-reply@mcb.mu',
+
+        Subject: 'Your MCB eStatement for May 2025 is ready',
+
+        BodyText: 'Dear Raj, your eStatement for May 2025 is available. Log in at https://www.mcb.mu to view it.',
+
+        IsVerified: 1
+
+        },
+
+        {
+
+        UserID: 1,
+
+        EmailID: 3,
+
+        SenderAddress: 'winner-promo@winner-deals.net',
+
+        Subject: 'You won Rs 50,000!',
+
+        BodyText: 'Congratulations! Claim your prize now at http://winner-claim-prize.com',
+
+        IsVerified: 0
+
+        },
+
+        {
+
+        UserID: 1,
+
+        EmailID: 4,
+
+        SenderAddress: 'no-reply@myt.mu',
+
+        Subject: 'Your MyT Bill June 2025',
+
+        BodyText: 'Dear customer, your MyT bill of Rs 1,299 is due. Pay at https://www.myt.mu',
+
+        IsVerified: 1
+
+        },
+
+        {
+
+        UserID: 1,
+
+        EmailID: 5,
+
+        SenderAddress: 'support@sbm-secure-alert.com',
+
+        Subject: 'SBM Account Suspended - Act Now',
+
+        BodyText: 'Verify your SBM account immediately at http://sbm-verify.net or lose access permanently',
+
+        IsVerified: 0
+
+        },
+
+        {
+
+        UserID: 1,
+
+        EmailID: 6,
+
+        SenderAddress: 'noreply@orange.mu',
+
+        Subject: 'Your Orange Monthly Statement',
+
+        BodyText: 'Your June statement is ready. View it at https://www.orange.mu',
+
+        IsVerified: 1
+
+        },
+
+        {
+
+        UserID: 1,
+
+        EmailID: 7,
+
+        SenderAddress: 'alert@mcb-security-check.net',
+
+        Subject: 'Suspicious Login Detected on Your Account',
+
+        BodyText: 'Someone logged into your MCB account from an unknown device. Confirm it was you: http://mcb-login-check.com',
+
+        IsVerified: 0
+
+        },
+
+        {
+
+        UserID: 1,
+
+        EmailID: 8,
+
+        SenderAddress: 'no-reply@ceb.mu',
+
+        Subject: 'Your CEB Bill for June 2025',
+
+        BodyText: 'Dear Mr. Patel, your electricity bill of Rs 3,100 is due by July 15th. Pay at https://www.ceb.mu',
+
+        IsVerified: 1
+
+        },
+
+
+
+        // === FRENCH REAL EMAILS (Legitimate) — 5 rows ===
+
+        {
+
+        UserID: 1,
+
+        EmailID: 9,
+
+        SenderAddress: 'noreply@ceb.mu',
+
+        Subject: 'Votre facture CEB pour juin 2025',
+
+        BodyText: 'Bonjour Monsieur Patel,\n\nVotre facture d\'électricité pour le mois de juin 2025 est disponible.\nMontant dû: Rs 3,100\nDate d\'échéance: 15 juillet 2025\n\nVeuillez vous connecter à votre espace client sur https://www.ceb.mu pour consulter votre facture en détail.\n\nMerci de votre confiance,\nCEB',
+
+        IsVerified: 1
+
+        },
+
+        {
+
+        UserID: 1,
+
+        EmailID: 10,
+
+        SenderAddress: 'no-reply@mcb.mu',
+
+        Subject: 'Votre eStatement MCB pour mai 2025',
+
+        BodyText: 'Cher client,\n\nVotre relevé bancaire pour le mois de mai 2025 est disponible sur MCB Juice.\n\nConnectez-vous à l\'application MCB Juice ou à https://www.mcb.mu pour le consulter.\n\nCordialement,\nMCB',
+
+        IsVerified: 1
+
+        },
+
+        {
+
+        UserID: 1,
+
+        EmailID: 11,
+
+        SenderAddress: 'service-client@myt.mu',
+
+        Subject: 'Votre facture MyT pour juin 2025',
+
+        BodyText: 'Bonjour,\n\nVotre facture MyT de Rs 1,299 est disponible.\nPayez avant le 30 juin 2025 sur https://www.myt.mu\n\nMerci,\nService client MyT',
+
+        IsVerified: 1
+
+        },
+
+        {
+
+        UserID: 1,
+
+        EmailID: 12,
+
+        SenderAddress: 'noreply@orange.mu',
+
+        Subject: 'Votre relevé Orange pour juin 2025',
+
+        BodyText: 'Bonjour,\n\nVotre relevé mensuel Orange est disponible.\nConsultez-le sur https://www.orange.mu\n\nMerci de votre confiance,\nOrange',
+
+        IsVerified: 1
+
+        },
+
+        {
+
+        UserID: 1,
+
+        EmailID: 13,
+
+        SenderAddress: 'info@bagatelle.mu',
+
+        Subject: 'Soldes d\'été chez Bagatelle Mall!',
+
+        BodyText: 'Profitez des soldes d\'été chez Bagatelle Mall!\n\nJusqu\'à 50% de réduction sur les vêtements, chaussures et accessoires.\n\nOffre valable jusqu\'au 31 juillet 2025.\n\nL\'équipe de Bagatelle Mall',
+
+        IsVerified: 1
+
+        },
+
+
+
+        // === FRENCH SCAM EMAILS (Phishing) — 5 rows ===
+
+        {
+
+        UserID: 1,
+
+        EmailID: 14,
+
+        SenderAddress: 'securite@mcb-verification.net',
+
+        Subject: 'URGENT: Votre compte MCB a été bloqué',
+
+        BodyText: 'Bonjour,\n\nNous avons détecté une activité suspecte sur votre compte MCB.\nPour des raisons de sécurité, votre compte a été temporairement bloqué.\n\nCliquez sur le lien ci-dessous pour vérifier votre identité et débloquer votre compte:\nhttp://mcb-verification.net/verifier\n\nSi vous ne le faites pas dans les 48 heures, votre compte sera définitivement fermé.\n\nCordialement,\nL\'équipe de sécurité MCB',
+
+        IsVerified: 0
+
+        },
+
+        {
+
+        UserID: 1,
+
+        EmailID: 15,
+
+        SenderAddress: 'support@sbm-securite.com',
+
+        Subject: 'Alerte: Accès à votre compte SBM suspendu',
+
+        BodyText: 'Cher client,\n\nNous avons remarqué des tentatives de connexion suspectes sur votre compte SBM.\nVotre accès a été suspendu pour votre protection.\n\nVeuillez confirmer votre identité ici:\nhttp://sbm-securite.com/confirmer\n\nCordialement,\nSupport SBM',
+
+        IsVerified: 0
+
+        },
+
+        {
+
+        UserID: 1,
+
+        EmailID: 16,
+
+        SenderAddress: 'service@myt-facture.fr',
+
+        Subject: 'Votre facture MyT est impayée - Action immédiate',
+
+        BodyText: 'Bonjour,\n\nVotre facture MyT de Rs 1,299 n\'a pas été payée.\nSi vous ne payez pas dans les 24 heures, votre ligne sera coupée.\n\nPayez maintenant:\nhttp://myt-facture.fr/payer\n\nMerci,\nService client MyT',
+
+        IsVerified: 0
+
+        },
+
+        {
+
+        UserID: 1,
+
+        EmailID: 17,
+
+        SenderAddress: 'securite@banque-mcb.net',
+
+        Subject: 'ALERTE: Votre compte MCB va être fermé',
+
+        BodyText: 'Monsieur Patel,\n\nNous avons détecté des transactions non autorisées sur votre compte MCB.\nPour éviter la fermeture définitive de votre compte, veuillez confirmer vos coordonnées bancaires immédiatement:\n\nhttp://banque-mcb.net/confirmer\n\nNous vous prions de régulariser votre situation sous 24 heures.\n\nService Sécurité MCB',
+
+        IsVerified: 0
+
+        },
+
+        {
+
+        UserID: 1,
+
+        EmailID: 18,
+
+        SenderAddress: 'info@promo-express.com',
+
+        Subject: 'Gagnez Rs 100,000! Offre exclusive',
+
+        BodyText: 'Félicitations!\n\nVous avez été sélectionné pour gagner Rs 100,000!\nPour réclamer votre prix, cliquez sur le lien ci-dessous et entrez vos coordonnées bancaires:\n\nhttp://promo-express.com/gagner\n\nOffre valable 48 heures seulement!\nNe manquez pas cette chance unique!',
+
+        IsVerified: 0
+
+        }
+
 ];
 
     // REAL FETCH 
