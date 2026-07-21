@@ -1,50 +1,49 @@
-# Welcome to your Expo app 👋
+# SmartRupi
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+SmartRupi is a mobile application developed for the UOM Auto Forge Hackathon 2026. Built by Team Cipher, it aims to bring secure, intelligent, and seamless financial management directly to users in Mauritius. By leveraging an enterprise-grade Multi-Agent System, the app connects to inboxes and bank accounts to act as a shield against fraud while serving as a personalized financial advisor.
 
-## Get started
+## Team Cipher
 
-1. Install dependencies
+*   **Team Leader:** Ghavish Subratty
+*   **Team Members:** Dhruv Govind, Teesha Niharika Jummaheer, Yashmeeta Mohonee, Khushi Doongoor
+  
+## Features
 
-   ```bash
-   npm install
-   ```
+*   **Scam Shield:** Scans connected emails and flags potential financial scams in real-time to address rising cybersecurity and phishing threats.
+*   **Finance Tracker & Deal Finder:** Reviews transactions, suggests budgeting improvements, and compares prices for planned retail purchases to improve financial literacy.
+*   **Tailored Stock Insight Engine:** Suggests investments, ranging from low-risk bonds to growth stocks, based on the user's remaining budget and risk tolerance.
+*   **Loan Matchmaker:** Evaluates financial health to recommend the best local bank plans and enables a 1-click mock online application.
 
-2. Start the app
+## Multi-Agent System (BAND AI)
 
-   ```bash
-   npx expo start
-   ```
+SmartRupi utilizes the BAND AI platform to deploy a coordinated Multi-Agent System using an Agent-to-Agent (A2A) protocol. The orchestration consists of four specialized agents:
 
-In the output, you'll find options to open the app in a
+*   **Agent 1 (The Scam Analyst):** Scans email text for phishing keywords and anomalies using LLM APIs, such as Gemini
+*   **Agent 2 (The Financial Auditor):** Queries the SQL database records to calculate income, expenses, and leftover budget.
+*   **Agent 3 (The Investment Strategist):** Receives contextual budget data from the Financial Auditor, pulls live data via the Alpha Vantage API, and generates tailored portfolio recommendations.
+*   **Agent 4 (The Loan Officer):** Evaluates the persistent financial context to calculate approval odds for local bank loans.
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+## Tech Stack
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+*   **Frontend:** React Native and Expo Go for rapid UI development, hot reloading, and seamless mobile testing.
+*   **Backend:** A hybrid approach using Node.js—utilizing the `mssql` package for primary app routing—interfacing with a lightweight Python microservice to run the `band-sdk` and execute the AI agents.
+*   **Database:** Microsoft SQL Server 2020, managed via SQL Server Management Studio (SSMS), to securely store user profiles, structured mock banking transactions, and loan application records locally.
 
-## Get a fresh project
+## Local Setup
 
-When you're ready, run:
-
-```bash
-npm run reset-project
-```
-
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
-
-## Learn more
-
-To learn more about developing your project with Expo, look at the following resources:
-
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
-
-## Join the community
-
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+1.  Clone the repository:
+    ```bash
+    git clone https://github.com/Ghavish/SmartRupi.git
+    ```
+2.  Navigate to the directory:
+    ```bash
+    cd SmartRupi
+    ```
+3.  Install frontend dependencies and start Expo:
+    ```bash
+    npm install
+    npx expo start
+    ```
+4.  Configure your environment variables for your database and API keys, utilizing the included `.env.example` and `.env.local` files for reference.
+5.  Set up your local database using Microsoft SQL Server and SSMS.
+6.  Start your Node.js backend and the Python microservice to initialize the BAND AI orchestration.
